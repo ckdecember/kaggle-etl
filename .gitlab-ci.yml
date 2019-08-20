@@ -4,6 +4,8 @@ stages:
 test:
   stage: test
   script:
-  - pip3 install -r requirements.txt
+  - apt-get update -qy
+  - apt-get install -y python-dev python-pip
+  - pip install -r requirements.txt
   - python3 -m unittest discover
 
