@@ -1,0 +1,2 @@
+job1:
+  script: "python3 -m unittest discover"
