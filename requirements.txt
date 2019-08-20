@@ -1,1 +1,3 @@
 pycurl
+python-dotenv
+bs4
