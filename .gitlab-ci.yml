@@ -1,2 +1,10 @@
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+  - python3 -m unittest discover
+
 job1:
   script: "python3 -m unittest discover"
