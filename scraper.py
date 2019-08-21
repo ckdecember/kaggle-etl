@@ -9,6 +9,7 @@ Use pycurl???  or not
 """
 
 import argparse
+from io import BytesIO
 import logging
 import os
 
@@ -19,6 +20,9 @@ import pycurl
 load_dotenv()
 
 class WebScrape():
+    def __init__(self):
+        self.encoding = 'UTF-8'
+
     def get_url(self, host_url):
         """ reads the url given """
         c = pycurl.Curl()
@@ -26,14 +30,16 @@ class WebScrape():
         c.setopt(pycurl.TIMEOUT, 10)
         c.setopt(pycurl.FOLLOWLOCATION, 1)
         c.setopt(pycurl.SSL_VERIFYPEER, 0);
+        #c.perform()
         session = c
         return session
 
-    def readpage(self):
+    def readpage(self, page_request):
         # read the webpage dom for this token
         # input name=X-XSRF-TOKEN
         # use bs4 to read a little bit.  get the token tag.  refeed tag.
-        pass
+        soup = BeautifulSoup(page_request, features="html.parser", from_encoding=self.encoding)
+        return soup
 
     def readstuff(self):
         pass
@@ -51,7 +57,12 @@ def main():
     ws = WebScrape()
     session = ws.get_url("https://www.kaggle.com/account/login?phase=emailSignIn&returnUrl=%2Fwendykan%2Flending-club-loan-data%2Fversion%2F1")
     print (session)
-    session.perform()
+    buffer = session.perform_rb()
+    print (buffer)
+    soup = ws.readpage(buffer)
+    logging.debug(soup)
+
+
 
 if __name__ == "__main__":
     main()
