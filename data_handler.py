@@ -23,19 +23,33 @@ class data_handler:
                 header = header.strip()
         
         col_header = header.split(',')
+
         return col_header
     
     def generate_create_table_sql(self, headers):
-        sql = "CREATE TABLE ( "
+        keywords = ["desc"]
+        sql = "CREATE TABLE loan_data ( "
+
+        # check for keywords
+
+        tmp_headers = [] 
+        for h in headers:
+            if h in keywords:
+                tmp_headers.append("\"" + h + "\"")
+            else:
+                tmp_headers.append(h)
+
+        headers = tmp_headers
         header_string = " text, ".join(headers)
         sql += header_string
+        sql += " text"
         sql += " );"
+
         return sql
 
 def main():
     dh = data_handler()
     header = dh.get_header('data/loan.csv.zip', 'loan.csv')
-    print(header)
     creat_sql = dh.generate_create_table_sql(header)
     print(creat_sql)
 

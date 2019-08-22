@@ -1,7 +1,6 @@
 data
 scratch.txt
 # disallow env_files
-.env
 env_file
 
 # Byte-compiled / optimized / DLL files
