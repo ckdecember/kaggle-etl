@@ -60,6 +60,9 @@ class data_handler:
 
         return sql
 
+    def execute_query(self):
+        pass
+
 def main():
     reserved_keywords = ["desc"]
 
@@ -69,7 +72,6 @@ def main():
     print(creat_sql)
     excel_header = dh.get_excelheader('data/LCDataDictionary.xlsx')
     arr = excel_header.array
-    
 
 if __name__ == "__main__":
     main()
