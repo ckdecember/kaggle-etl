@@ -2,29 +2,42 @@
 # coding: utf-8
 
 """
-Web Scraper Module
-Pull data from kaggle
-Use pycurl???  or not
+Data Handler Module
+
 
 """
-import zlib
 
 import zipfile
 
 class data_handler:
-    def stream_gzip_decompress(self, stream):
-        dec = zlib.decompressobj(32 + zlib.MAX_WBITS)  # offset 32 to skip the header
-        #for chunk in stream:
-        #    rv = dec.decompress(chunk)
-        #    if rv:
-        #        yield rv
+    def get_header(self, zip_file, data_file: "file name inside zip") -> list:
+        """ 
+        retrieves the first line of a zipped csv file - the headers
+        zip_file : name of the actual zipfile
+        data_file: name of the file inside the zipfile 
+        """
+        with zipfile.ZipFile(zip_file) as myzipfh:
+            with myzipfh.open(data_file) as fh:
+                header = fh.readline()
+                header = header.decode('UTF-8')
+                header = header.strip()
+        
+        col_header = header.split(',')
+        return col_header
+    
+    def generate_create_table_sql(self, headers):
+        sql = "CREATE TABLE ( "
+        header_string = " text, ".join(headers)
+        sql += header_string
+        sql += " );"
+        return sql
 
 def main():
     dh = data_handler()
-
-    with zipfile.ZipFile("data/loan.csv.zip") as myzipfh:
-        with myzipfh.open('loan.csv') as fh:
-            print(fh.readline())
+    header = dh.get_header('data/loan.csv.zip', 'loan.csv')
+    print(header)
+    creat_sql = dh.generate_create_table_sql(header)
+    print(creat_sql)
 
 if __name__ == "__main__":
     main()
