@@ -11,9 +11,12 @@ dynamically generate sql statements
 
 import zipfile
 
+from dotenv import load_dotenv
 import pandas
 import psycopg2
 import xlrd
+
+load_dotenv()
 
 class data_handler:
     def get_zipheader(self, zip_file, data_file: "file name inside zip") -> list:
@@ -60,7 +63,12 @@ class data_handler:
 
         return sql
 
-    def execute_query(self):
+    def create_connection(self):
+        conn = psycopg2.connect(dbname=os.environ['DB_NAME'], user=os.environ['DB_USER'], \
+            password=os.environ['DB_PASSWORD'], host=os.environ['DB_HOST'])
+        return conn
+
+    def execute_query(self, sql):
         pass
 
 def main():
@@ -72,6 +80,7 @@ def main():
     print(creat_sql)
     excel_header = dh.get_excelheader('data/LCDataDictionary.xlsx')
     arr = excel_header.array
+    # printable list
 
 if __name__ == "__main__":
     main()

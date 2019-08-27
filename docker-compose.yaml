@@ -9,6 +9,16 @@ services:
      - env_file
     networks:
       - db_network
+  loanapp:
+    build: .
+    env_file:
+      - env_file
+    volumes:
+      - .:/opt/services/loanapp/src
+    networks:
+      - db_network
+    depends_on:
+      - db
 networks:
   db_network:
     driver: bridge
