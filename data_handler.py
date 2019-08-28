@@ -9,6 +9,7 @@ dynamically generate sql statements
 
 """
 
+import os
 import zipfile
 
 from dotenv import load_dotenv
@@ -68,8 +69,10 @@ class data_handler:
             password=os.environ['DB_PASSWORD'], host=os.environ['DB_HOST'])
         return conn
 
-    def execute_query(self, sql):
-        pass
+    def execute_query(self, conn, sql):
+        cursor = conn.cursor()
+        #cursor.execute("")
+        return 
 
 def main():
     reserved_keywords = ["desc"]
@@ -81,6 +84,9 @@ def main():
     excel_header = dh.get_excelheader('data/LCDataDictionary.xlsx')
     arr = excel_header.array
     # printable list
+
+    conn = dh.create_connection()
+
 
 if __name__ == "__main__":
     main()
